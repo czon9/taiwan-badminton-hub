@@ -64,35 +64,34 @@ export default function PaiMianHomePage() {
     { brand: 'Mizuno', name: 'ML65 Smooth', gauge: '0.65 mm', type: '細線高彈', desc: '日本高彈科技塗層，出球乾淨俐落，平抽快攻反應迅速。', colors: ['雪白 (White)', '螢光黃 (Yellow)', '珊瑚橘 (Orange)'] },
     { brand: 'Mizuno', name: 'MZ66', gauge: '0.66 mm', type: '均衡全面', desc: '手感清晰且具備良好耐久度，落點控制精準。', colors: ['純白 (White)', '黑色 (Black)'] },
   ];
+  // 五大品牌全級別球拍資料（帶有官網攝影/去背風格圖片）
+const allRackets = [
+  // Yonex
+  { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 88D Pro', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,070', market: '熱銷中', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80', desc: '後場重殺壓制神拍，頭重感明顯，雙打後場砲手首選。' },
+  { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 100ZZ', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,590', market: '熱銷預購', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=600&auto=format&fit=crop&q=80', desc: '頂級旗艦實心中桿，揮拍極速，強攻重殺代表作。' },
+  { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 77 Pro', style: '全面型 Balanced', weight: '3U / 4U', flex: '適中 Medium', price: '$4,870', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=600&auto=format&fit=crop&q=80', desc: '黃雅瓊指定拍，中桿彈性極佳，連續攻防拉吊極為順手。' },
+  { brand: 'Yonex', level: 'MID', levelTag: '中階進階', name: 'Astrox 88 Game', style: '進攻型 Attack', weight: '4U', flex: '適中 Medium', price: '$2,470', market: '好入手', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80', desc: 'Pro 版降階款，好上手不費力，進攻與性價比完美平衡。' },
+  { brand: 'Yonex', level: 'ENTRY', levelTag: '平價入門', name: 'Arcsaber 7 Play', style: '控球型 Control', weight: '4U', flex: '軟 Soft', price: '$1,430', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=600&auto=format&fit=crop&q=80', desc: '甜區大中桿軟，極度好打輕鬆打高遠球，初學者超強首選！' },
 
-  // 五大品牌全級別完整球拍資料清單 (含圖片連結與外觀)
-  const allRackets = [
-    // Yonex
-    { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 88D Pro', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,070', market: '熱銷中', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=500&auto=format&fit=crop&q=60', desc: '後場重殺壓制神拍，頭重感明顯，雙打後場砲手首選。' },
-    { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 100ZZ', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,590', market: '熱銷預購', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=500&auto=format&fit=crop&q=60', desc: '頂級旗艦實心中桿，揮拍極速，強攻重殺代表作。' },
-    { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 77 Pro', style: '全面型 Balanced', weight: '3U / 4U', flex: '適中 Medium', price: '$4,870', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=500&auto=format&fit=crop&q=60', desc: '黃雅瓊指定拍，中桿彈性極佳，連續攻防拉吊極為順手。' },
-    { brand: 'Yonex', level: 'MID', levelTag: '中階進階', name: 'Astrox 88 Game', style: '進攻型 Attack', weight: '4U', flex: '適中 Medium', price: '$2,470', market: '好入手', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=500&auto=format&fit=crop&q=60', desc: 'Pro 版降階款，好上手不費力，進攻與性價比完美平衡。' },
-    { brand: 'Yonex', level: 'ENTRY', levelTag: '平價入門', name: 'Arcsaber 7 Play', style: '控球型 Control', weight: '4U', flex: '軟 Soft', price: '$1,430', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=500&auto=format&fit=crop&q=60', desc: '甜區大中桿軟，極度好打輕鬆打高遠球，初學者超強首選！' },
+  // VICTOR
+  { brand: 'Victor', level: 'PRO', levelTag: '高階旗艦', name: 'Thruster Ryuga II Pro (龍牙二代)', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,070', market: '熱銷中', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=600&auto=format&fit=crop&q=80', desc: '李梓嘉戰拍，懸浮核心科技握柄，重殺連續下壓極強。' },
+  { brand: 'Victor', level: 'MID', levelTag: '中階進階', name: 'Auraspeed 9000 (神速 9000)', style: '全面型 Balanced', weight: '4U/5U', flex: '適中 Medium', price: '$2,080', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=600&auto=format&fit=crop&q=80', desc: '揮拍極度輕快，專為平抽快攻與防守打造。' },
+  { brand: 'Victor', level: 'ENTRY', levelTag: '平價入門', name: 'Challenge 9500 (TK-9500)', style: '進攻型 Attack', weight: '3U / 4U', flex: '適中 Medium', price: '$1,280', market: '熱銷神拍', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80', desc: '台灣銷量極高的國民入門神拍，耐打穩定 CP 值爆表！' },
 
-    // VICTOR
-    { brand: 'Victor', level: 'PRO', levelTag: '高階旗艦', name: 'Thruster Ryuga II Pro (龍牙二代)', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,070', market: '熱銷中', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=500&auto=format&fit=crop&q=60', desc: '李梓嘉戰拍，懸浮核心科技握柄，重殺連續下壓極強。' },
-    { brand: 'Victor', level: 'MID', levelTag: '中階進階', name: 'Auraspeed 9000 (神速 9000)', style: '全面型 Balanced', weight: '4U/5U', flex: '適中 Medium', price: '$2,080', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=500&auto=format&fit=crop&q=60', desc: '揮拍極度輕快，專為平抽快攻與防守打造。' },
-    { brand: 'Victor', level: 'ENTRY', levelTag: '平價入門', name: 'Challenge 9500 (TK-9500)', style: '進攻型 Attack', weight: '3U / 4U', flex: '適中 Medium', price: '$1,280', market: '熱銷神拍', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=500&auto=format&fit=crop&q=60', desc: '台灣銷量極高的國民入門神拍，耐打穩定 CP 值爆表！' },
+  // FLEET
+  { brand: 'Fleet', level: 'PRO', levelTag: '高階旗艦', name: 'Woven 1000 EVO', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$3,800', market: '好入手', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=600&auto=format&fit=crop&q=80', desc: '台灣神拍 EVO 進化版，高剛性 Woven 編織碳纖維，打感紮實。' },
+  { brand: 'Fleet', level: 'MID', levelTag: '中階進階', name: 'Professional 3000 VI', style: '控球型 Control', weight: '3U / 4U', flex: '適中 Medium', price: '$3,200', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=600&auto=format&fit=crop&q=80', desc: '平球快攻與精準拉吊控球利器，破風框揮拍速度流暢。' },
+  { brand: 'Fleet', level: 'ENTRY', levelTag: '平價入門', name: 'Nano Power 100', style: '全面型 Balanced', weight: '4U', flex: '軟 Soft', price: '$1,380', market: '好入手', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80', desc: '富力特平價長青款，中桿軟省力，高遠球輕鬆出球遠。' },
 
-    // FLEET
-    { brand: 'Fleet', level: 'PRO', levelTag: '高階旗艦', name: 'Woven 1000 EVO', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$3,800', market: '好入手', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=500&auto=format&fit=crop&q=60', desc: '台灣神拍 EVO 進化版，高剛性 Woven 編織碳纖維，打感紮實。' },
-    { brand: 'Fleet', level: 'MID', levelTag: '中階進階', name: 'Professional 3000 VI', style: '控球型 Control', weight: '3U / 4U', flex: '適中 Medium', price: '$3,200', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=500&auto=format&fit=crop&q=60', desc: '平球快攻與精準拉吊控球利器，破風框揮拍速度流暢。' },
-    { brand: 'Fleet', level: 'ENTRY', levelTag: '平價入門', name: 'Nano Power 100', style: '全面型 Balanced', weight: '4U', flex: '軟 Soft', price: '$1,380', market: '好入手', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=500&auto=format&fit=crop&q=60', desc: '富力特平價長青款，中桿軟省力，高遠球輕鬆出球遠。' },
+  // MIZUNO
+  { brand: 'Mizuno', level: 'PRO', levelTag: '高階旗艦', name: 'Fortius 11 Power', style: '進攻型 Attack', weight: '4U', flex: '硬 Stiff', price: '$5,070', market: '中等庫存', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=600&auto=format&fit=crop&q=80', desc: '日本美津濃頂級旗艦，極致力量重殺型。' },
+  { brand: 'Mizuno', level: 'ENTRY', levelTag: '平價入門', name: 'Technoblade 660', style: '全面型 Balanced', weight: '4U', flex: '軟 Soft', price: '$1,450', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=600&auto=format&fit=crop&q=80', desc: '高彈性破風框，極度平價且好揮拍的美津濃入門選擇。' },
 
-    // MIZUNO
-    { brand: 'Mizuno', level: 'PRO', levelTag: '高階旗艦', name: 'Fortius 11 Power', style: '進攻型 Attack', weight: '4U', flex: '硬 Stiff', price: '$5,070', market: '中等庫存', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=500&auto=format&fit=crop&q=60', desc: '日本美津濃頂級旗艦，極致力量重殺型。' },
-    { brand: 'Mizuno', level: 'ENTRY', levelTag: '平價入門', name: 'Technoblade 660', style: '全面型 Balanced', weight: '4U', flex: '軟 Soft', price: '$1,450', market: '好入手', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=500&auto=format&fit=crop&q=60', desc: '高彈性破風框，極度平價且好揮拍的美津濃入門選擇。' },
-
-    // JNICE
-    { brand: 'JNICE', level: 'PRO', levelTag: '高階旗艦', name: '神魔 (SNIPER 90)', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$3,280', market: '好入手', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=500&auto=format&fit=crop&q=60', desc: '久奈司旗艦重殺戰拍，破風兼具頭重感，殺球急墜。' },
-    { brand: 'JNICE', level: 'MID', levelTag: '中階明星', name: '白羽刃 (White Blade)', style: '全面型 Balanced', weight: '4U', flex: '適中 Medium', price: '$2,680', market: '熱銷中', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=500&auto=format&fit=crop&q=60', desc: '絕美白銀配色，中桿彈性極佳好借力，高 CP 值進階首選。' },
-    { brand: 'JNICE', level: 'ENTRY', levelTag: '平價入門', name: '追風 2000 (Wind Speed)', style: '全面型 Balanced', weight: '4U', flex: '軟 Soft', price: '$1,280', market: '好入手', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=500&auto=format&fit=crop&q=60', desc: '千元出頭親民款，中桿軟好揮拍，買了不傷荷包。' },
-  ];
+  // JNICE
+  { brand: 'JNICE', level: 'PRO', levelTag: '高階旗艦', name: '神魔 (SNIPER 90)', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$3,280', market: '好入手', img: 'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?w=600&auto=format&fit=crop&q=80', desc: '久奈司旗艦重殺戰拍，破風兼具頭重感，殺球急墜。' },
+  { brand: 'JNICE', level: 'MID', levelTag: '中階明星', name: '白羽刃 (White Blade)', style: '全面型 Balanced', weight: '4U', flex: '適中 Medium', price: '$2,680', market: '熱銷中', img: 'https://images.unsplash.com/photo-1521537634581-0dced2efa2a3?w=600&auto=format&fit=crop&q=80', desc: '絕美白銀配色，中桿彈性極佳好借力，高 CP 值進階首選。' },
+  { brand: 'JNICE', level: 'ENTRY', levelTag: '平價入門', name: '追風 2000 (Wind Speed)', style: '全面型 Balanced', weight: '4U', flex: '軟 Soft', price: '$1,280', market: '好入手', img: 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80', desc: '千元出頭親民款，中桿軟好揮拍，買了不傷荷包。' },
+];
 
   const filteredRackets = allRackets.filter((racket) => {
     const matchesBrand = selectedBrand === 'ALL' || racket.brand.toLowerCase() === selectedBrand.toLowerCase();
@@ -593,13 +592,28 @@ export default function PaiMianHomePage() {
                 <div key={idx} className="bg-white rounded border border-slate-200 hover:border-[#C5A059] transition shadow-sm overflow-hidden flex flex-col justify-between">
                   <div>
                     {/* 球拍外觀預覽圖 */}
-                    <div className="h-44 bg-slate-100 relative overflow-hidden group">
-                      <div className="w-full h-full bg-[#16382B]/5 flex items-center justify-center relative">
-  <svg className="w-20 h-20 text-[#16382B] opacity-80 group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    {/* 拍框 */}
-    <ellipse cx="12" cy="8" rx="6" ry="7" />
-    {/* 拍網網格 */}
-    <line x1="9" y1="3" x2="9" y2="13" strokeWidth="0.5" opacity="0.6" />
+<div className="h-48 bg-slate-100/80 relative overflow-hidden group flex items-center justify-center p-4">
+  <img 
+    src={racket.img || 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80'} 
+    alt={racket.name} 
+    className="h-full object-contain group-hover:scale-105 transition duration-300 drop-shadow-md"
+    onError={(e: any) => {
+      // 若外部圖片失效，自動退回高品質球拍去背備援圖
+      e.target.src = 'https://images.unsplash.com/photo-1626225967045-9410dd9913d0?w=600&auto=format&fit=crop&q=80';
+    }}
+  />
+  <div className="absolute top-3 left-3 flex space-x-1.5 z-10">
+    <span className="text-xs font-bold px-2 py-0.5 bg-[#16382B] text-white rounded shadow-sm">
+      {racket.brand}
+    </span>
+    <span className={`text-[11px] font-semibold px-2 py-0.5 rounded shadow-sm ${
+      racket.level === 'ENTRY' ? 'bg-green-600 text-white' :
+      racket.level === 'MID' ? 'bg-blue-600 text-white' : 'bg-amber-600 text-white'
+    }`}>
+      {racket.levelTag}
+    </span>
+  </div>
+</div>
     <line x1="12" y1="1" x2="12" y2="15" strokeWidth="0.5" opacity="0.6" />
     <line x1="15" y1="3" x2="15" y2="13" strokeWidth="0.5" opacity="0.6" />
     <line x1="6" y1="6" x2="18" y2="6" strokeWidth="0.5" opacity="0.6" />
