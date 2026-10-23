@@ -594,11 +594,24 @@ export default function PaiMianHomePage() {
                   <div>
                     {/* 球拍外觀預覽圖 */}
                     <div className="h-44 bg-slate-100 relative overflow-hidden group">
-                      <img 
-                        src={racket.img} 
-                        alt={racket.name} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                      />
+                      <div className="w-full h-full bg-[#16382B]/5 flex items-center justify-center relative">
+  <svg className="w-20 h-20 text-[#16382B] opacity-80 group-hover:scale-110 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    {/* 拍框 */}
+    <ellipse cx="12" cy="8" rx="6" ry="7" />
+    {/* 拍網網格 */}
+    <line x1="9" y1="3" x2="9" y2="13" strokeWidth="0.5" opacity="0.6" />
+    <line x1="12" y1="1" x2="12" y2="15" strokeWidth="0.5" opacity="0.6" />
+    <line x1="15" y1="3" x2="15" y2="13" strokeWidth="0.5" opacity="0.6" />
+    <line x1="6" y1="6" x2="18" y2="6" strokeWidth="0.5" opacity="0.6" />
+    <line x1="6" y1="9" x2="18" y2="9" strokeWidth="0.5" opacity="0.6" />
+    {/* 中桿與柄 */}
+    <line x1="12" y1="15" x2="12" y2="21" strokeWidth="2" />
+    <rect x="11" y="21" width="2" height="2" fill="currentColor" />
+  </svg>
+  <span className="absolute bottom-2 text-[10px] text-slate-400 font-medium tracking-wider uppercase">
+    {racket.brand} Preview
+  </span>
+</div>
                       <div className="absolute top-3 left-3 flex space-x-1.5">
                         <span className="text-xs font-bold px-2 py-0.5 bg-[#16382B] text-white rounded">
                           {racket.brand}
