@@ -54,7 +54,7 @@ export default function PaiMianHomePage() {
     { brand: 'Mizuno', name: 'MZ66', gauge: '0.66 mm', type: '均衡全面', desc: '手感清晰且具備良好耐久度，落點控制精準。', colors: ['純白 (White)', '黑色 (Black)'] },
   ];
 
-  // 五大品牌全級別完整球拍資料清單 (新增座標預設參數：defaultTension, shaftScore, frameType)
+  // 五大品牌全級別完整球拍資料清單
   const allRackets = [
     { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 88D Pro', style: '進攻型 Attack', weight: '3U / 4U', flex: '硬 Stiff', price: '$5,070', market: '熱銷中', img: '/rackets/88dpro.svg', defaultTension: 26, shaftScore: 85, frameType: '盒型重殺穩定框', desc: '後場重殺壓制神拍，頭重感明顯，雙打後場砲手首選。' },
     { brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 100ZZ', style: '進攻型 Attack', weight: '3U / 4U', flex: '特硬 Extra Stiff', price: '$5,590', market: '熱銷預購', img: '/rackets/88dpro.svg', defaultTension: 27, shaftScore: 95, frameType: '緊湊小拍面破風盒框', desc: '頂級旗艦實心中桿，揮拍極速，強攻重殺代表作。' },
@@ -89,15 +89,13 @@ export default function PaiMianHomePage() {
 
   // 動態計算十字座標與發力指標
   const getSimulationMetrics = () => {
-    // 計算綜合難度與發力指數 (0 ~ 100)
     const weightBonus = simWeight === '3U' ? 12 : simWeight === '4U' ? 0 : -10;
-    const tensionScore = ((simTension - 18) / 12) * 55; // 磅數佔 55% 權重
-    const shaftFactor = (simShaftScore / 100) * 45; // 中桿與框型佔 45% 權重
+    const tensionScore = ((simTension - 18) / 12) * 55;
+    const shaftFactor = (simShaftScore / 100) * 45;
     const totalPowerReq = Math.min(100, Math.max(5, Math.round(tensionScore + shaftFactor + weightBonus)));
 
-    // 判斷象限位置
-    const isRight = simTension >= 24; // 右半邊：高磅數
-    const isTop = simShaftScore >= 55; // 上半邊：硬中桿/重殺框
+    const isRight = simTension >= 24;
+    const isTop = simShaftScore >= 55;
 
     let quadrantName = '';
     let quadrantDesc = '';
@@ -140,7 +138,6 @@ export default function PaiMianHomePage() {
       powerRequirementText,
       sweetSpotText,
       wristRiskText,
-      // 計算十字座標百分比 (X: 5%~95%, Y: 5%~95%)
       xPercent: Math.min(95, Math.max(5, ((simTension - 18) / 12) * 90 + 5)),
       yPercent: Math.min(95, Math.max(5, 100 - (simShaftScore * 0.9 + 5))),
     };
@@ -291,7 +288,7 @@ export default function PaiMianHomePage() {
                 ].map((t) => (
                   <button
                     key={t.id}
-                    onClick={() => setActiveTab('home') || setActiveWikiTopic(t.id as any)}
+                    onClick={() => setActiveWikiTopic(t.id as any)}
                     className={`px-4 py-2 text-sm font-medium rounded transition ${
                       activeWikiTopic === t.id
                         ? 'bg-[#16382B] text-white shadow-sm'
@@ -356,7 +353,7 @@ export default function PaiMianHomePage() {
                     {/* 中央核心區：左側 X/Y 十字座標圖 ＋ 右側控制滑桿與即時結果 */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                       
-                      {/* 左側：X/Y 十字象限視覺座標圖 (佔 6 欄) */}
+                      {/* 左側：X/Y 十字象限視覺座標圖 */}
                       <div className="lg:col-span-6 space-y-2">
                         <div className="relative w-full aspect-square max-w-[420px] mx-auto bg-gradient-to-br from-emerald-50/60 via-white to-amber-50/60 border-2 border-slate-300 rounded-lg shadow-inner overflow-hidden select-none">
                           
@@ -392,7 +389,7 @@ export default function PaiMianHomePage() {
                             高磅 (30Lbs) →
                           </span>
 
-                          {/* 動態座標點 (隨拉動即時移動) */}
+                          {/* 動態座標點 */}
                           <div
                             style={{
                               left: `${simMetrics.xPercent}%`,
@@ -400,11 +397,8 @@ export default function PaiMianHomePage() {
                             }}
                             className="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-150 z-20 flex flex-col items-center"
                           >
-                            {/* 呼吸光暈圈 */}
                             <div className="w-10 h-10 rounded-full bg-[#C5A059]/30 animate-ping absolute"></div>
-                            {/* 核心座標紅點 */}
                             <div className="w-5 h-5 rounded-full bg-[#16382B] border-2 border-[#C5A059] shadow-lg relative z-10"></div>
-                            {/* 懸浮標籤 */}
                             <div className="mt-1.5 bg-[#16382B] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow whitespace-nowrap">
                               {selectedSimRacket} ({simWeight} / {simTension}磅)
                             </div>
@@ -412,7 +406,7 @@ export default function PaiMianHomePage() {
                         </div>
                       </div>
 
-                      {/* 右側：左右/上下拉動滑桿 ＆ 即時發力與手感分析儀表板 (佔 6 欄) */}
+                      {/* 右側：左右/上下拉動滑桿 ＆ 即時發力與手感分析儀表板 */}
                       <div className="lg:col-span-6 space-y-6">
                         
                         {/* 滑桿 1：X軸 左右拉動穿線磅數 */}
@@ -549,7 +543,7 @@ export default function PaiMianHomePage() {
                     </div>
 
                     <p className="text-sm">
-                      在揮拍擊球的 0.05 秒內，中桿會經歷「向後彎曲蓄力 $\rightarrow$ 向前加速回彈鞭甩」的過程。<strong>選購中桿的核心原則只有一個：「你的揮拍爆發力，必須足以把這根中桿打彎！」</strong>
+                      在揮拍擊球的 0.05 秒內，中桿會經歷「向後彎曲蓄力 → 向前加速回彈鞭甩」的過程。<strong>選購中桿的核心原則只有一個：「你的揮拍爆發力，必須足以把這根中桿打彎！」</strong>
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
