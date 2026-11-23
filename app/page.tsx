@@ -471,7 +471,7 @@ export default function PaiMianHomePage() {
   const [activeTab, setActiveTab] = useState<'home' | 'smart-match' | 'database' | 'wiki' | 'news'>('home');
 
   // 球拍詳情彈窗 (Modal) & 多拍比較陣列
-  const [detailRacket, setDetailRacket] = useState<Racket null |>(null);
+  const [detailRacket, setDetailRacket] = useState<Racket | null>(null);
   const [compareIds, setCompareIds] = useState<string[]>(['yy-77p', 'yy-88dp']);
   const [showCompareModal, setShowCompareModal] = useState(false);
 
