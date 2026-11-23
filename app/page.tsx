@@ -8,122 +8,13 @@ interface Racket {
   level: 'ENTRY' | 'MID' | 'PRO';
   levelTag: string;
   name: string;
-  style: 'Attack' | 'Control' | 'Balanced';
-  styleTag: string;
-  weight: string;
-  balance: string;
-  flex: '軟 Soft' | '偏軟 Medium-Soft' | '適中 Medium' | '硬 Stiff' | '特硬 Extra Stiff';
-  priceNum: number;
-  price: string;
-  img: string;
-  defaultTension: number;
-  maxTension: number;
-  shaftScore: number;
-  frameType: string;
-  recommendedString: string;
-  recommendedColor: string;
-  desc: string;
-  pros: string;
-  cons: string;
-}
-
-export default function PaiMianV2Page() {
-  // 主導覽分頁：home | match | database | wiki | news
-  const [activeTab, setActiveTab] = useState<'home' | 'match' | 'database' | 'wiki' | 'news'>('home');
-
-  // 球拍詳情彈窗 (整合規格、配線與購買通路)
-  const [detailRacket, setDetailRacket] = useState<Racket | null>(null);
-
-  // 首頁快速搜尋
-  const [homeSearch, setHomeSearch] = useState('');
-
-  // ==================== 智慧選拍 6 題互動問卷 State ====================
-  const [quizStep, setQuizStep] = useState<number>(1);
-  const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
-  const [answers, setAnswers] = useState({
-    q1_level: 'regular',      // beginner | casual | regular | competitive
-    q2_court: 'doubles',      // singles | doubles | both | unsure
-    q3_style: 'balanced',     // attack | fast_drive | balanced | control | unsure
-    q4_goal: 'speed',         // power | speed | effortless | control | all_round
-    q5_pain: 'none',          // clear_hard | slow_swing | weak_smash | unstable | none
-    q6_budget: '3000_5000',   // under_1500 | 1500_3000 | 3000_5000 | over_5000 | any
-    q7_brand: 'ALL',          // 進階選填：品牌偏好
-  });
-
-  // 球拍資料庫篩選與比較 State
-  const [selectedBrand, setSelectedBrand] = useState('ALL');
-  const [selectedLevel, setSelectedLevel] = useState('ALL');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [compareIds, setCompareIds] = useState<string[]>([]);
-
-  // 知識庫 & 打感座標模擬器 State
-  const [activeWikiTopic, setActiveWikiTopic] = useState<'tension' | 'shaft' | 'frame' | 'string' | 'matrix'>('tension');
-  const [selectedStringBrand, setSelectedStringBrand] = useState('Yonex');
-  const [selectedSimRacket, setSelectedSimRacket] = useState('Astrox 77 Pro');
-  const [simWeight, setSimWeight] = useState<'3U' | '4U' | '5U'>('4U');
-  const [simTension, setSimTension] = useState<number>(24);
-  const [simShaftScore, setSimShaftScore] = useState<number>(55);
-
-  // 五大品牌球拍完整資料庫
-  const allRackets: Racket[] = [
-    {
-      id: 'ax88dp', brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 88D Pro',
-      style: 'Attack', styleTag: '強力進攻', weight: '3U / 4U', balance: '偏頭重', flex: '硬 Stiff',
-      priceNum: 5070, price: 'NT$ 5,070', img: '/rackets/88dpro.svg', defaultTension: 26, maxTension: 28, shaftScore: 85,
-      frameType: '盒型重殺穩定框', recommendedString: 'Yonex BG-80 (0.68mm)', recommendedColor: '螢光黃 / 珍珠白',
-      desc: '後場重殺壓制代表作，頭重感明顯，連續下壓威力強勁。',
-      pros: '後場殺球下壓角度尖銳、拍面抗扭穩定性極佳。', cons: '中桿較硬且頭重，平抽防守與被動球需較強小臂發力。'
-    },
-    {
-      id: 'ax100zz', brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 100ZZ',
-      style: 'Attack', styleTag: '極限重殺', weight: '3U / 4U', balance: '頭重', flex: '特硬 Extra Stiff',
-      priceNum: 5590, price: 'NT$ 5,590', img: '/rackets/88dpro.svg', defaultTension: 27, maxTension: 28, shaftScore: 95,
-      frameType: '緊湊小拍面破風盒框', recommendedString: 'Yonex Exbolt 63 (0.63mm)', recommendedColor: '雪白 / 烈焰紅',
-      desc: '頂級實心中桿設計，揮拍風阻小、出球速度極快，專為爆發型選手打造。',
-      pros: '揮速快且力量傳導零延遲，連續進攻壓迫感極強。', cons: '拍面甜區較小、中桿極硬，初學或發力不足者極難駕馭。'
-    },
-    {
-      id: 'ax77p', brand: 'Yonex', level: 'PRO', levelTag: '高階旗艦', name: 'Astrox 77 Pro',
-      style: 'Balanced', styleTag: '攻守兼備', weight: '3U / 4U', balance: '微頭重', flex: '適中 Medium',
-      priceNum: 4870, price: 'NT$ 4,870', img: '/rackets/88dpro.svg', defaultTension: 25, maxTension: 28, shaftScore: 55,
-      frameType: '破風盒型複合框', recommendedString: 'Yonex BG-66 Ultimax (0.65mm)', recommendedColor: '耀目白 / 螢光黃',
-      desc: '中桿彈性極佳，兼顧後場下壓與中前場連貫，容錯率高的全能型旗艦拍。',
-      pros:這份 UI/UX 反饋的切入點非常精準，把原本分散的「AI 選拍、新手配置、購買通路、四象限模擬器」收斂成一條清楚的探索漏斗，無論對一般球友使用還是專題簡報展示都會加分很多。
-
-我已經根據這份 V2 改版建議，幫你把整個 `app/page.tsx` 重新架構並完成程式碼撰寫，包含以下 **六大核心升級**：
-
-1. **全新四大核心入口導覽**：將原本 6 個零散分頁收斂為 **「首頁探索」**、**「智慧選拍」**（整合原本的新手配置）、**「裝備資料庫」**（含多拍規格比較表）、**「羽球知識庫」**（含調整後的「手感配置矩陣」與四大裝備百科）與 **「新品與情報」**[cite: 4]。
-2. **首頁改為「產品探索型」版面**：移除一進站就出現的大量教學長文，改為強烈的 主視覺標語（「下一支球拍，從了解自己開始。」）、**快速型號/品牌搜尋框**、**4 個快速探索快捷鍵**，以及**熱門球拍探索卡片**[cite: 5]。
-3. **「3 分鐘智慧選拍」6+2 題互動問卷**：採用「一次一題、自動跳轉、進度條顯示」的卡片設計，包含 6 道核心題目（程度、情境、打法、目標、困擾、預算）與 2 道進階選填（偏好品牌、目前球拍）[cite: 7, 8, 9]。
-4. **規則篩選＋評分＋AI 混合推薦引擎**：先依預算篩選並透過規格權重算出「**首選推薦 / 偏向進攻的選擇 / 偏向靈活的選擇**」3 支候選球拍（移除容易引起誤解的 `98% 適合度` 假精準分數），並可一鍵呼叫 AI 深度解析推薦理由與建議配線[cite: 10, 11]。
-5. **球拍詳情視窗 (Modal) ＆ 球拍 PK 比較功能**：所有推薦結果與資料庫卡片皆可點擊開啟「球拍詳情彈窗」（內含原廠規格、適合族群、推薦線種磅數與購買通路資訊），並支援勾選最多 3 支球拍進行並排規格比較[cite: 4, 11]。
-6. **「手感配置矩陣」改版（原四象限模擬器）**：移入「羽球知識庫」的進階工具中，移除未經實測的 `52/100 發力門檻分數` 與 `運動傷害風險等級`，改為更客觀、具專業可信度的「**擊球特性傾向（出球彈性 vs. 落點控制）**」與「**揮拍驅動門檻說明**」。
-
----
-
-### 更新步驟：替換 `app/page.tsx` 完整程式碼
-
-請在 VS Code 打開 `taiwan-badminton-hub-main/app/page.tsx`，按下 **`Command + A`** 全選刪除舊內容，將以下完整程式碼貼上並按下 **`Command + S`** 存檔：
-
-```tsx
-'use client';
-
-import { useState } from 'react';
-
-// ==================== 型別與資料定義 ====================
-interface Racket {
-  id: string;
-  brand: string;
-  level: 'ENTRY' | 'MID' | 'PRO';
-  levelTag: string;
-  name: string;
   style: 'Attack' | 'Control' | 'Balanced' | 'Speed';
   styleTag: string;
   weight: string;
   balance: string;
   flex: string;
-  flexScore: number; // 1(極軟) ~ 5(特硬)
-  headHeavyScore: number; // 1(頭輕) ~ 5(極頭重)
+  flexScore: number;
+  headHeavyScore: number;
   maxTension: string;
   priceNum: number;
   price: string;
@@ -467,35 +358,29 @@ const BADMINTON_STRINGS = [
 ];
 
 export default function PaiMianHomePage() {
-  // 主導覽狀態（精簡為五大核心入口：首頁、智慧選拍、裝備資料庫、羽球知識庫、新品情報）
   const [activeTab, setActiveTab] = useState<'home' | 'smart-match' | 'database' | 'wiki' | 'news'>('home');
-
-  // 球拍詳情彈窗 (Modal) & 多拍比較陣列
   const [detailRacket, setDetailRacket] = useState<Racket | null>(null);
   const [compareIds, setCompareIds] = useState<string[]>(['yy-77p', 'yy-88dp']);
   const [showCompareModal, setShowCompareModal] = useState(false);
 
-  // ==================== 智慧選拍 V2：6+2 互動問卷 State ====================
-  const [quizStep, setQuizStep] = useState<number>(1); // 1~6 核心題, 7 進階選填, 8 結果頁
+  const [quizStep, setQuizStep] = useState<number>(1);
   const [answers, setAnswers] = useState({
-    level: 'casual', // beginner | casual | regular | competitive
-    scenario: 'doubles', // singles | doubles | both | unsure
-    playStyle: 'balanced', // attack | speed | balanced | control | unsure
-    goal: 'balanced', // power | speed | effortless | control | balanced
-    painPoint: 'none', // clear_hard | slow_swing | weak_smash | unstable | none
-    budget: 3000, // 1500 | 3000 | 5000 | 99999
+    level: 'casual',
+    scenario: 'doubles',
+    playStyle: 'balanced',
+    goal: 'balanced',
+    painPoint: 'none',
+    budget: 3000,
     brandPref: 'ALL',
     currentRacket: '',
   });
   const [aiLoading, setAiLoading] = useState(false);
   const [aiExplanation, setAiExplanation] = useState<any>(null);
 
-  // ==================== 裝備資料庫篩選 State ====================
   const [selectedBrand, setSelectedBrand] = useState('ALL');
   const [selectedLevel, setSelectedLevel] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // ==================== 羽球知識庫與「手感配置矩陣」State ====================
   const [activeWikiTopic, setActiveWikiTopic] = useState<'tension' | 'shaft' | 'frame' | 'string' | 'matrix'>('tension');
   const [selectedStringBrand, setSelectedStringBrand] = useState('Yonex');
   const [selectedSimRacket, setSelectedSimRacket] = useState('Astrox 77 Pro');
@@ -504,27 +389,22 @@ export default function PaiMianHomePage() {
   const [simShaftScore, setSimShaftScore] = useState<number>(55);
   const [simFrameType, setSimFrameType] = useState<string>('破風盒型複合框');
 
-  // 切換比較清單
   const toggleCompare = (id: string) => {
     setCompareIds((prev) => {
       if (prev.includes(id)) return prev.filter((item) => item !== id);
-      if (prev.length >= 3) return [...prev.slice(1), id]; // 最多比較 3 支
+      if (prev.length >= 3) return [...prev.slice(1), id];
       return [...prev, id];
     });
   };
 
-  // ==================== 規則篩選 ＋ 規格評分推薦引擎 ====================
   const getMatchedRackets = () => {
-    // 1. 預算優先過濾
     const withinBudget = RACKETS_DATA.filter((r) => r.priceNum <= answers.budget);
     const pool = withinBudget.length >= 3 ? withinBudget : RACKETS_DATA;
     const budgetRelaxed = withinBudget.length < 3;
 
-    // 2. 依據問卷計算每支球拍的規則匹配度（不顯示假精準百分比，僅用於排序與方向分類）
     const scored = pool.map((r) => {
       let score = 0;
 
-      // 程度與操作門檻 (20%)
       if (answers.level === 'beginner') {
         if (r.level === 'ENTRY') score += 30;
         else if (r.level === 'MID') score += 10;
@@ -537,26 +417,22 @@ export default function PaiMianHomePage() {
         if (r.level === 'PRO') score += 30;
       }
 
-      // 改善目標 (30%)
       if (answers.goal === 'power' && r.headHeavyScore >= 4) score += 30;
       if (answers.goal === 'speed' && r.style === 'Speed') score += 30;
       if (answers.goal === 'effortless' && r.flexScore <= 2) score += 30;
       if (answers.goal === 'control' && r.style === 'Control') score += 30;
       if (answers.goal === 'balanced' && (r.style === 'Balanced' || r.flexScore === 3)) score += 30;
 
-      // 打法偏好 (25%)
       if (answers.playStyle === 'attack' && r.style === 'Attack') score += 25;
       if (answers.playStyle === 'speed' && r.style === 'Speed') score += 25;
       if (answers.playStyle === 'control' && r.style === 'Control') score += 25;
       if (answers.playStyle === 'balanced' && r.style === 'Balanced') score += 25;
 
-      // 困擾修正 (15%)
       if (answers.painPoint === 'clear_hard' && r.flexScore <= 3) score += 15;
       if (answers.painPoint === 'slow_swing' && r.headHeavyScore <= 3) score += 15;
       if (answers.painPoint === 'weak_smash' && r.headHeavyScore >= 4) score += 15;
       if (answers.painPoint === 'unstable' && r.frameType.includes('盒')) score += 15;
 
-      // 品牌加分 (10%)
       if (answers.brandPref !== 'ALL' && r.brand === answers.brandPref) score += 12;
 
       return { racket: r, score };
@@ -577,7 +453,6 @@ export default function PaiMianHomePage() {
     return { primary, attackAlt, agileAlt, budgetRelaxed };
   };
 
-  // 呼叫後端 AI 生成白話推薦理由與配線建議
   const fetchAiMatchDetails = async (matched: { primary: Racket; attackAlt: Racket; agileAlt: Racket }) => {
     setAiLoading(true);
     setAiExplanation(null);
@@ -600,13 +475,12 @@ export default function PaiMianHomePage() {
         setAiExplanation(data.data);
       }
     } catch {
-      // 若 API 暫時無回應，前端仍保有完整的規則推薦結果不影響體驗
+      // Ignore network fallback error
     } finally {
       setAiLoading(false);
     }
   };
 
-  // 問卷選項點擊處理（一次只問一題，自動推進下一題）
   const handleSelectQuizOption = (field: keyof typeof answers, value: any, nextStep: number) => {
     const updated = { ...answers, [field]: value };
     setAnswers(updated);
@@ -617,7 +491,6 @@ export default function PaiMianHomePage() {
     }
   };
 
-  // 套用球拍至知識庫中的「手感配置矩陣」
   const handleSelectRacketForSim = (racketName: string) => {
     setSelectedSimRacket(racketName);
     const found = RACKETS_DATA.find((r) => r.name === racketName);
@@ -630,7 +503,6 @@ export default function PaiMianHomePage() {
     }
   };
 
-  // 手感配置矩陣客觀物理傾向計算（移除未經實測的精確分數與醫療風險判定）
   const getMatrixCharacteristics = () => {
     const isHighTension = simTension >= 24;
     const isStiffFrame = simShaftScore >= 55;
@@ -689,7 +561,7 @@ export default function PaiMianHomePage() {
 
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-[#222222] font-sans flex flex-col justify-between">
-      {/* ==================== 頂部導覽列（收斂為清晰產品架構） ==================== */}
+      {/* 頂部導覽列 */}
       <header className="border-b border-slate-200/80 bg-[#FAF9F5]/95 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
           <div
@@ -728,7 +600,6 @@ export default function PaiMianHomePage() {
               </button>
             ))}
 
-            {/* 浮動球拍比較按鈕 */}
             <button
               onClick={() => setShowCompareModal(true)}
               className="ml-2 px-3 py-1.5 bg-[#16382B] text-white text-xs font-bold rounded-full hover:bg-[#122e23] transition flex items-center space-x-1.5 whitespace-nowrap shadow-sm"
@@ -742,13 +613,12 @@ export default function PaiMianHomePage() {
         </div>
       </header>
 
-      {/* ==================== 主要內容區 ==================== */}
+      {/* 主要內容區 */}
       <main className="max-w-6xl mx-auto px-6 py-8 sm:py-12 flex-1 w-full">
         
-        {/* ==================== 1. 首頁探索（聚焦核心任務：選拍、搜尋、熱門推薦） ==================== */}
+        {/* ==================== 1. 首頁探索 ==================== */}
         {activeTab === 'home' && (
           <div className="space-y-16 animate-fade-in">
-            {/* Hero 產品主視覺區 */}
             <section className="bg-white rounded-2xl border border-slate-200/90 p-8 sm:p-12 shadow-sm relative overflow-hidden">
               <div className="max-w-2xl space-y-6 relative z-10">
                 <span className="inline-block px-3 py-1 bg-[#16382B]/10 text-[#16382B] text-xs font-bold rounded-full tracking-wide">
@@ -763,7 +633,6 @@ export default function PaiMianHomePage() {
                   幫助台灣羽球愛好者，根據打法習慣、程度與預算，找到真正適合自己的球拍與羽球線配置。
                 </p>
 
-                {/* 主行動按鈕 + 快速搜尋列 */}
                 <div className="space-y-3 pt-2">
                   <button
                     onClick={() => {
@@ -908,12 +777,11 @@ export default function PaiMianHomePage() {
           </div>
         )}
 
-        {/* ==================== 2. 智慧選拍 V2（6+2 互動式問卷與結果頁） ==================== */}
+        {/* ==================== 2. 智慧選拍 V2 ==================== */}
         {activeTab === 'smart-match' && (
           <div className="max-w-3xl mx-auto animate-fade-in">
             {quizStep <= 7 ? (
               <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 shadow-sm space-y-8">
-                {/* 進度條與返回控制 */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-xs font-bold text-slate-500">
                     <span className="text-[#C5A059] tracking-widest uppercase">PAIMIAN / SMART MATCH</span>
@@ -929,7 +797,6 @@ export default function PaiMianHomePage() {
                   </div>
                 </div>
 
-                {/* Q1: 程度 */}
                 {quizStep === 1 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -963,7 +830,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* Q2: 情境 */}
                 {quizStep === 2 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -997,7 +863,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* Q3: 打法 */}
                 {quizStep === 3 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -1032,7 +897,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* Q4: 目標 */}
                 {quizStep === 4 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -1067,7 +931,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* Q5: 困擾 */}
                 {quizStep === 5 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -1102,7 +965,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* Q6: 預算 */}
                 {quizStep === 6 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -1136,7 +998,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* Q7 & Q8: 進階選填 */}
                 {quizStep === 7 && (
                   <div className="space-y-6">
                     <div className="space-y-1">
@@ -1187,7 +1048,6 @@ export default function PaiMianHomePage() {
                   </div>
                 )}
 
-                {/* 底部上一題導覽 */}
                 {quizStep > 1 && (
                   <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
                     <button
@@ -1208,7 +1068,6 @@ export default function PaiMianHomePage() {
                 )}
               </div>
             ) : (
-              /* ==================== 推薦結果頁（特徵摘要 + 三種方向候選球拍 + 下一步行動） ==================== */
               (() => {
                 const matched = getMatchedRackets();
                 const candidates = [
@@ -1219,7 +1078,6 @@ export default function PaiMianHomePage() {
 
                 return (
                   <div className="space-y-8 animate-fade-in">
-                    {/* 頂部特徵摘要卡 */}
                     <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4">
                       <div className="flex flex-wrap justify-between items-center gap-2">
                         <span className="text-xs font-bold text-[#C5A059] tracking-widest uppercase">
@@ -1256,7 +1114,6 @@ export default function PaiMianHomePage() {
                       )}
                     </div>
 
-                    {/* 三種候選球拍卡片 */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {candidates.map((item, idx) => (
                         <div
@@ -1311,7 +1168,6 @@ export default function PaiMianHomePage() {
                       ))}
                     </div>
 
-                    {/* AI 教練白話解析區塊 */}
                     <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-sm">
                       <h3 className="text-base font-extrabold text-[#16382B] flex items-center space-x-2">
                         <span>🤖</span>
@@ -1325,12 +1181,11 @@ export default function PaiMianHomePage() {
                         </p>
                       ) : (
                         <p className="text-xs text-slate-600 leading-relaxed">
-                          以上三支候選球拍已根據你的程度與預算完成規格篩選。建議優先點擊下方「一鍵並排比較這 3 支球拍」，從平衡點與中桿軟硬度確認最符合你手感的款式。
+                          以上三支候選球拍已根據你的程度與預算完成規格篩選。建議優先點擊下方「並排比較這 3 支球拍」，從平衡點與中桿軟硬度確認最符合你手感的款式。
                         </p>
                       )}
                     </div>
 
-                    {/* 下一步行動引導列 */}
                     <div className="bg-[#16382B] text-white rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
                       <div>
                         <div className="font-bold text-base">接下來，你可以直接並排對照這 3 支候選球拍</div>
@@ -1353,7 +1208,7 @@ export default function PaiMianHomePage() {
           </div>
         )}
 
-        {/* ==================== 3. 裝備資料庫（含篩選與多拍比較勾選） ==================== */}
+        {/* ==================== 3. 裝備資料庫 ==================== */}
         {activeTab === 'database' && (
           <div className="space-y-8 animate-fade-in">
             <div className="flex flex-wrap justify-between items-end gap-4">
@@ -1370,7 +1225,6 @@ export default function PaiMianHomePage() {
               </button>
             </div>
 
-            {/* 篩選器 */}
             <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-4 shadow-sm">
               <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-xs font-bold text-slate-500 mr-2">品牌：</span>
@@ -1416,7 +1270,6 @@ export default function PaiMianHomePage() {
               </div>
             </div>
 
-            {/* 球拍網格列表 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredRackets.map((racket) => {
                 const isCompared = compareIds.includes(racket.id);
@@ -1488,7 +1341,7 @@ export default function PaiMianHomePage() {
           </div>
         )}
 
-        {/* ==================== 4. 羽球知識庫（含改良版手感配置矩陣） ==================== */}
+        {/* ==================== 4. 羽球知識庫 ==================== */}
         {activeTab === 'wiki' && (
           <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-8 shadow-sm animate-fade-in">
             <div className="space-y-1 border-b border-slate-100 pb-4">
@@ -1519,7 +1372,6 @@ export default function PaiMianHomePage() {
               ))}
             </div>
 
-            {/* 1. 磅數解析 */}
             {activeWikiTopic === 'tension' && (
               <div className="space-y-6 text-slate-700 leading-relaxed">
                 <div className="border-l-4 border-[#16382B] pl-4">
@@ -1552,7 +1404,6 @@ export default function PaiMianHomePage() {
               </div>
             )}
 
-            {/* 2. 中桿軟硬度 */}
             {activeWikiTopic === 'shaft' && (
               <div className="space-y-6 text-slate-700 leading-relaxed">
                 <div className="border-l-4 border-[#16382B] pl-4">
@@ -1576,7 +1427,6 @@ export default function PaiMianHomePage() {
               </div>
             )}
 
-            {/* 3. 拍框結構 */}
             {activeWikiTopic === 'frame' && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-700">
                 <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-2">
@@ -1594,7 +1444,6 @@ export default function PaiMianHomePage() {
               </div>
             )}
 
-            {/* 4. 羽球線圖鑑 */}
             {activeWikiTopic === 'string' && (
               <div className="space-y-6">
                 <div className="flex flex-wrap gap-2 items-center bg-slate-50 p-3 rounded-xl border border-slate-200">
@@ -1634,7 +1483,6 @@ export default function PaiMianHomePage() {
               </div>
             )}
 
-            {/* 5. 改良版互動工具：手感配置矩陣 */}
             {activeWikiTopic === 'matrix' && (
               <div className="space-y-6 animate-fade-in">
                 <div className="bg-amber-50/80 border border-amber-200 p-3.5 rounded-xl text-xs text-amber-950">
@@ -1787,9 +1635,9 @@ export default function PaiMianHomePage() {
         )}
       </main>
 
-      {/* ==================== 球拍詳情彈窗 Modal（整合規格、適合族群、推薦線種與購買通路） ==================== */}
+      {/* ==================== 球拍詳情彈窗 Modal ==================== */}
       {detailRacket && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl">
             <div className="flex justify-between items-start border-b border-slate-100 pb-4">
               <div>
@@ -1831,7 +1679,6 @@ export default function PaiMianHomePage() {
                 <p className="text-emerald-900">{detailRacket.recommendedString}</p>
               </div>
 
-              {/* 整合原本獨立的購買通路至球拍詳情頁 */}
               <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
                 <div className="font-bold text-[#16382B]">🏪 實體經銷與穿線通路建議：</div>
                 <ul className="text-slate-600 space-y-1 list-disc pl-4">
@@ -1871,7 +1718,7 @@ export default function PaiMianHomePage() {
 
       {/* ==================== 多拍並排規格比較彈窗 Modal ==================== */}
       {showCompareModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 shadow-2xl">
             <div className="flex justify-between items-center border-b border-slate-100 pb-4">
               <div>
@@ -1968,7 +1815,7 @@ export default function PaiMianHomePage() {
         </div>
       )}
 
-      {/* ==================== 頁尾 ==================== */}
+      {/* 頁尾 */}
       <footer className="bg-[#16382B] text-slate-300 py-8 text-center text-xs border-t border-emerald-900 mt-16">
         <div className="max-w-6xl mx-auto px-6 space-y-2">
           <p className="font-medium">拍面 PaiMian | 羽球裝備探索與智慧選拍平台</p>
